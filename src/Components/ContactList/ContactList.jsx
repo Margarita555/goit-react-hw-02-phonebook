@@ -10,7 +10,11 @@ class ContactList extends Component {
       <ul className={s.ContactList}>
           {this.props.contacts.map(contact => (
               <li key={nanoid()}
-                  className={s.item}>{contact.name}:{contact.number}</li>
+              className={s.item}><span className={s.star}>&#10031;</span>{contact.name}:<span className={s.number}>{contact.number}</span>
+              <button className={s.btn}
+                onClick={() => this.props.onDeleteBtn(contact.name)}
+                type="button">Delete</button>
+            </li>
           )
           )}
           

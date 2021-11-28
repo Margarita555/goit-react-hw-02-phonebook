@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 import ContactForm from './Components/ContactForm/ContactForm';
 import ContactList from './Components/ContactList/ContactList';
 import Filter from './Components/Filter/Filter';
-import './App.css';
+import s from './App.module.css'
 
 
 class App extends Component {
@@ -17,24 +17,25 @@ class App extends Component {
     filter: '',
   }
 
-  addContact = ({name, number}) => {
+  addContact = ({ name, number }) => {
+    if (this.state.contacts.find(contact => contact.name === name)) {
+      alert(`${name} is already in contacts`);
+      return
+    }
     const newContact = {
       id: nanoid(),
       name,
       number
     }
     this.setState(({ contacts }) => ({
-      
+    
       contacts: [newContact, ...contacts]
     }))
   }
 
   onFilterChange = e => {
-    // const visibleContacts = this.state.contacts.filter(contact => contact.name.toLowerCase().includes(e.currentTarget.value.toLowerCase()))
-    // console.log(visibleContacts)
         this.setState({
           filter: e.currentTarget.value,
-          // contacts: visibleContacts
         })  
   };
     getVisibleContacts = () => {
@@ -47,10 +48,16 @@ class App extends Component {
         this.setState({ name: '', number: '' })
     };
   
+    deleteContact = name => {
+      this.setState(({ contacts }) => ({
+      contacts: contacts.filter(contact => contact.name !== name)
+    }))
+    }
+  
   render() {
     const visibleContacts = this.getVisibleContacts();
   return (
-    <div className="App">
+    <div className={s.App}>
       <h1>Phonebook</h1>
       <ContactForm
         contacts={this.state.contacts}
@@ -62,6 +69,7 @@ class App extends Component {
       />
       <ContactList
         contacts={visibleContacts}
+        onDeleteBtn={this.deleteContact}
       />
     </div>
   );}
