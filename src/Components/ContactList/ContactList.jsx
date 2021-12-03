@@ -1,25 +1,24 @@
-import { Component } from 'react/cjs/react.production.min';
 import { nanoid } from 'nanoid';
-import s from './ContactList.module.css'
+import s from './ContactList.module.css';
 
-class ContactList extends Component {
-
-  render() {
-    
+const ContactList = ({ contacts, onDeleteBtn }) => {
   return (
-      <ul className={s.ContactList}>
-          {this.props.contacts.map(contact => (
-              <li key={nanoid()}
-              className={s.item}><span className={s.star}>&#10031;</span>{contact.name}:<span className={s.number}>{contact.number}</span>
-              <button className={s.btn}
-                onClick={() => this.props.onDeleteBtn(contact.name)}
-                type="button">Delete</button>
-            </li>
-          )
-          )}
-          
-   </ul>
-  );}
-}
+    <ul className={s.ContactList}>
+      {contacts.map(({ number, name }) => (
+        <li key={nanoid()} className={s.item}>
+          <span className={s.star}>&#10031;</span>
+          {name}:<span className={s.number}>{number}</span>
+          <button
+            className={s.btn}
+            onClick={() => onDeleteBtn(name)}
+            type="button"
+          >
+            Delete
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 export default ContactList;
